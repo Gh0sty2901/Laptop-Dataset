@@ -89,9 +89,36 @@ st.markdown("""In this bargraph we can observe that the most expensive laptop ty
 #TABLE 4
 
 #TABLE 5
+apple_products = df[df['Company'] == 'Apple']
+
+plt.figure(figsize=(10, 6))
+plt.bar(apple_products['Product'], apple_products['Price (Euro)'], color='blue')
+plt.title('Prices of Apple Products')
+plt.xlabel('Product')
+plt.ylabel('Price (Euro)')
+plt.xticks(rotation=45)
+plt.grid(axis='y')
+
+st.pyplot(plt)
+
+st.markdown("""For this bar chart, it shows the MacBook products price ranges.
+            Each bar could indicate a range (e.g., minimum and maximum prices) for the specific model, 
+            highlighting how prices vary within each product line.""")
 
 #TABLE 6
+average_price = df.groupby('Inches')['Price (Euro)'].mean().reset_index()
 
+plt.figure(figsize=(12, 6))
+plt.plot(average_price['Inches'], average_price['Price (Euro)'], 'o', color='b')
+plt.title('Average Laptop Price by Screen Size')
+plt.xlabel('Screen Size (Inches)')
+plt.ylabel('Average Price (Euro)')
+plt.xticks(rotation=45)
+plt.grid()
+st.pyplot(plt)
+
+st.markdown("""For this dot plot graph, it shows the relationship between laptop prices and their screen sizes.
+            For instance, larger screen sizes (like 18+ inches) might be associated with higher prices.""")
 #TABLE 7
 
 #TABLE 8
