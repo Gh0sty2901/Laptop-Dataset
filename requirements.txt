@@ -1,1 +1,7 @@
 streamlit
+matplotlibv
+numpy
+pandas
+seaborn
+altair
+wordcloud
