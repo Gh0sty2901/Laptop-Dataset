@@ -120,8 +120,53 @@ st.pyplot(plt)
 st.markdown("""For this dot plot graph, it shows the relationship between laptop prices and their screen sizes.
             For instance, larger screen sizes (like 18+ inches) might be associated with higher prices.""")
 #TABLE 7
+df.set_index('Company', inplace=True) 
+ 
+ 
+frequency_counts = df['CPU_Frequency (GHz)'].value_counts().sort_index() 
+ 
+ 
+st.title('Count of CPU Frequencies (GHz)') 
+st.write("This bar chart shows the count of different CPU frequencies.") 
+ 
+ 
+plt.figure(figsize=(12, 6)) 
+plt.bar(frequency_counts.index, frequency_counts.values, color='blue') plt.title('Count of CPU Frequencies (GHz)') plt.xlabel('CPU Frequency (GHz)') plt.ylabel('Count') plt.xticks(rotation=45) plt.grid(axis='y') plt.tight_layout() 
+ 
+ 
+st.pyplot(plt) 
+ 
+ 
+st.write(""" 
+This bar chart illustrates the distribution of CPU frequencies (in GHz) across various laptops from the dataset. 
+ 
+Most laptops fall between 2.0 GHz and 3.0 GHz, with the highest concentration near 2.5 GHz (over 250 units),  
+while lower frequencies (0.5 GHz to 1.5 GHz) are less common (below 100 units), and frequencies above 3.0 GHz are rare. 
+""") 
 
 #TABLE 8
+CPU_company = df['CPU_Company'].value_counts() 
+ 
+ 
+st.title('Count of CPU Manufacturers') 
+st.write("This bar chart shows the CPUs manufactured by Intel, AMD, and Samsung.") 
+ 
+ 
+plt.figure(figsize=(12, 6)) 
+plt.bar(CPU_company.index, CPU_company.values, color='blue', edgecolor='black') plt.title('Count of CPU Manufacturers') plt.xlabel('CPU Manufacturer') plt.ylabel('Count') plt.xticks(rotation=45) plt.grid(axis='y') 
+plt.tight_layout() 
+ 
+ 
+st.pyplot(plt) 
+ 
+ 
+st.write(""" 
+**Intel**: Dominates the dataset, with a count exceeding 1200 laptops. Intel is the leading manufacturer,  indicating its high prevalence in the laptop market from this dataset. 
+ 
+**AMD**: The count for AMD is significantly lower, just above 100. AMD follows but shows a much smaller share compared to Intel. 
+ 
+**Samsung**: Although labeled, it appears to have no data. 
+""") 
 
 #TABLE 9
 # Average RAM Graph
