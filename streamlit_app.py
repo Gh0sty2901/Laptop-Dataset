@@ -97,7 +97,63 @@ st.markdown("""In this bargraph we can observe that the most expensive laptop ty
 #TABLE 8
 
 #TABLE 9
+# Average RAM Graph
+average_ram_per_brand = laptop_data.groupby('Company')['RAM (GB)'].mean().sort_values()
+
+plt.figure(figsize=(10, 6))
+average_ram_per_brand.plot(kind='barh', color='skyblue')
+plt.title('Average RAM by Laptop Brand')
+plt.xlabel('Average RAM (GB)')
+plt.ylabel('Brand')
+plt.grid(True)
+
+# Display
+st.pyplot(plt)
+
+# Analysis
+st.write("""
+Each horizontal bar on the graph represents a different laptop brand, such as Apple, Dell, Acer, and so on. The graph shows the average RAM (in GB) for each of these brands. This shows that Razer and MSI have the highest average memory at over 13 GB, while Vero and Mediacom have much lower averages at about 3–4 GB. 
+
+The brands can be easily compared in terms of memory capacity across various manufacturers because they are arranged in ascending order according to their average RAM. This graph highlights significant trends. It indicates that, while brands with lower average RAM may concentrate on budget or daily use laptops, high-performance brands, like Razer and MSI, are probably targeting power users, such as gamers or professionals needing high-end performance.
+
+Based on performance requirements and use cases, this comparison provides information about how memory configurations differ among brands, which can assist consumers in making decisions.
+""")
 
 #TABLE 10
+# Average Sceen Resolution Graph
+def extract_resolution(res):
+    match = re.search(r'(\d+)x(\d+)', res)
+    if match:
+        width, height = match.groups()
+        return int(width), int(height)
+    return None, None
+
+laptop_data['Width'], laptop_data['Height'] = zip(*laptop_data['ScreenResolution'].apply(extract_resolution))
+
+laptop_data_clean = laptop_data.dropna(subset=['Width', 'Height'])
+
+avg_resolution = laptop_data_clean.groupby('Company')[['Width', 'Height']].mean()
+
+plt.figure(figsize=(10, 6))
+avg_resolution.plot(kind='bar', stacked=False, width=0.8)
+plt.title('Average Screen Resolution by Laptop Brand')
+plt.xlabel('Brand')
+plt.ylabel('Average Resolution (pixels)')
+plt.xticks(rotation=45)
+plt.tight_layout()
+
+# Display
+st.pyplot(plt)
+
+# Analysis
+st.write("""
+With two bars for each laptop brand, one representing the average screen width and the other the average screen height, 
+the graph shows the average screen resolution (in pixels) for different laptop brands. Compared to other brands like 
+Acer and HP, brands like Apple and Dell typically have higher average screen resolutions, particularly in terms of width. 
+All brands generally have wider widths (horizontal resolutions), which correspond to the widescreen format found in many 
+contemporary laptops. The disparities in focus on display quality can be seen in the screen resolutions, with some brands 
+offering higher-end models with sharper screens, like "Retina" or Full HD displays.
+""")
+
 
 
