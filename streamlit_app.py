@@ -85,8 +85,21 @@ st.markdown("""In this bargraph we can observe that the most expensive laptop ty
             """)
     
 #TABLE 3
+def cpu_Ave_Chart():
+    cpu_avg_price = df.groupby('CPU_Company')['Price (Euro)'].mean().loc[['Intel', 'AMD']]
+    st.bar_chart(data=cpu_avg_price, x='Average Price (Euro)', y='CPU Company', horizontal = True)
+cpu_Ave_Chart()
+st.markdown("""As shown in the bargraph, it compares the average pricing of laptops based on the CPU manufacturer (AMD vs Intel). 
+            Based on it, data tells that the laptops with AMD CPUs are signiificantly lower compared to laptops with Intel CPUs.""")
 
 #TABLE 4
+def brand_count():
+    brand_lt_count = df['Company'].value_counts().sort_values(ascending=True)
+    st.bar_chart(data=brand_lt_count, x='Laptop Company', y='Number of Laptops', horizontal = True)
+brand_count()
+st.markdown("""In this bargraph, the number of available laptops being sold by each company is shown, with Dell, Lenovo, HP, being
+            among the brands with the most available options of laptops for customers to choose from, while Huawei having the least
+            laptops being sold to the market""")
 
 #TABLE 5
 apple_products = df[df['Company'] == 'Apple']
