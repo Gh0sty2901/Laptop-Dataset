@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import altair as alt
+import re
 from wordcloud import WordCloud
 from mpl_toolkits.mplot3d import Axes3D
 
@@ -87,7 +88,7 @@ st.markdown("""In this bargraph we can observe that the most expensive laptop ty
 #TABLE 3
 def cpu_Ave_Chart():
     cpu_avg_price = df.groupby('CPU_Company')['Price (Euro)'].mean().loc[['Intel', 'AMD']]
-    st.bar_chart(data=cpu_avg_price, x='Average Price (Euro)', y='CPU Company', horizontal = True)
+    st.bar_chart(cpu_avg_price)
 cpu_Ave_Chart()
 st.markdown("""As shown in the bargraph, it compares the average pricing of laptops based on the CPU manufacturer (AMD vs Intel). 
             Based on it, data tells that the laptops with AMD CPUs are signiificantly lower compared to laptops with Intel CPUs.""")
@@ -95,60 +96,70 @@ st.markdown("""As shown in the bargraph, it compares the average pricing of lapt
 #TABLE 4
 def brand_count():
     brand_lt_count = df['Company'].value_counts().sort_values(ascending=True)
-    st.bar_chart(data=brand_lt_count, x='Laptop Company', y='Number of Laptops', horizontal = True)
+    st.bar_chart(brand_lt_count)
 brand_count()
 st.markdown("""In this bargraph, the number of available laptops being sold by each company is shown, with Dell, Lenovo, HP, being
             among the brands with the most available options of laptops for customers to choose from, while Huawei having the least
             laptops being sold to the market""")
 
 #TABLE 5
-apple_products = df[df['Company'] == 'Apple']
+def Apple_Laptops():
+    apple_products = df[df['Company'] == 'Apple']
 
-plt.figure(figsize=(10, 6))
-plt.bar(apple_products['Product'], apple_products['Price (Euro)'], color='blue')
-plt.title('Prices of Apple Products')
-plt.xlabel('Product')
-plt.ylabel('Price (Euro)')
-plt.xticks(rotation=45)
-plt.grid(axis='y')
+    plt.figure(figsize=(10, 6))
+    plt.bar(apple_products['Product'], apple_products['Price (Euro)'], color='blue')
+    plt.title('Prices of Apple Products')
+    plt.xlabel('Product')
+    plt.ylabel('Price (Euro)')
+    plt.xticks(rotation=45)
+    plt.grid(axis='y')
 
-st.pyplot(plt)
+    st.pyplot(plt)
 
 st.markdown("""For this bar chart, it shows the MacBook products price ranges.
             Each bar could indicate a range (e.g., minimum and maximum prices) for the specific model, 
             highlighting how prices vary within each product line.""")
 
 #TABLE 6
-average_price = df.groupby('Inches')['Price (Euro)'].mean().reset_index()
+def Average_Laptop_Price():
+    average_price = df.groupby('Inches')['Price (Euro)'].mean().reset_index()
 
-plt.figure(figsize=(12, 6))
-plt.plot(average_price['Inches'], average_price['Price (Euro)'], 'o', color='b')
-plt.title('Average Laptop Price by Screen Size')
-plt.xlabel('Screen Size (Inches)')
-plt.ylabel('Average Price (Euro)')
-plt.xticks(rotation=45)
-plt.grid()
-st.pyplot(plt)
+    plt.figure(figsize=(12, 6))
+    plt.plot(average_price['Inches'], average_price['Price (Euro)'], 'o', color='b')
+    plt.title('Average Laptop Price by Screen Size')
+    plt.xlabel('Screen Size (Inches)')
+    plt.ylabel('Average Price (Euro)')
+    plt.xticks(rotation=45)
+    plt.grid()
+    st.pyplot(plt)
+Average_Laptop_Price()
 
 st.markdown("""For this dot plot graph, it shows the relationship between laptop prices and their screen sizes.
             For instance, larger screen sizes (like 18+ inches) might be associated with higher prices.""")
 #TABLE 7
-df.set_index('Company', inplace=True) 
- 
- 
-frequency_counts = df['CPU_Frequency (GHz)'].value_counts().sort_index() 
- 
- 
-st.title('Count of CPU Frequencies (GHz)') 
-st.write("This bar chart shows the count of different CPU frequencies.") 
- 
- 
-plt.figure(figsize=(12, 6)) 
-plt.bar(frequency_counts.index, frequency_counts.values, color='blue') plt.title('Count of CPU Frequencies (GHz)') plt.xlabel('CPU Frequency (GHz)') plt.ylabel('Count') plt.xticks(rotation=45) plt.grid(axis='y') plt.tight_layout() 
- 
- 
-st.pyplot(plt) 
- 
+def CPU_Frequency():
+    df.set_index('Company', inplace=True) 
+    
+    
+    frequency_counts = df['CPU_Frequency (GHz)'].value_counts().sort_index() 
+    
+    
+    st.title('Count of CPU Frequencies (GHz)') 
+    st.write("This bar chart shows the count of different CPU frequencies.") 
+    
+    
+    plt.figure(figsize=(12, 6)) 
+    plt.bar(frequency_counts.index, frequency_counts.values, color='blue') 
+    plt.title('Count of CPU Frequencies (GHz)') 
+    plt.xlabel('CPU Frequency (GHz)') 
+    plt.ylabel('Count') 
+    plt.xticks(rotation=45) 
+    plt.grid(axis='y') 
+    plt.tight_layout() 
+    
+    
+    st.pyplot(plt) 
+CPU_Frequency()  
  
 st.write(""" 
 This bar chart illustrates the distribution of CPU frequencies (in GHz) across various laptops from the dataset. 
@@ -158,19 +169,26 @@ while lower frequencies (0.5 GHz to 1.5 GHz) are less common (below 100 units), 
 """) 
 
 #TABLE 8
-CPU_company = df['CPU_Company'].value_counts() 
- 
- 
-st.title('Count of CPU Manufacturers') 
-st.write("This bar chart shows the CPUs manufactured by Intel, AMD, and Samsung.") 
- 
- 
-plt.figure(figsize=(12, 6)) 
-plt.bar(CPU_company.index, CPU_company.values, color='blue', edgecolor='black') plt.title('Count of CPU Manufacturers') plt.xlabel('CPU Manufacturer') plt.ylabel('Count') plt.xticks(rotation=45) plt.grid(axis='y') 
-plt.tight_layout() 
- 
- 
-st.pyplot(plt) 
+def CPU_Company():
+    CPU_company = df['CPU_Company'].value_counts() 
+    
+    
+    st.title('Count of CPU Manufacturers') 
+    st.write("This bar chart shows the CPUs manufactured by Intel, AMD, and Samsung.") 
+    
+    
+    plt.figure(figsize=(12, 6)) 
+    plt.bar(CPU_company.index, CPU_company.values, color='blue', edgecolor='black') 
+    plt.title('Count of CPU Manufacturers') 
+    plt.xlabel('CPU Manufacturer') 
+    plt.ylabel('Count') 
+    plt.xticks(rotation=45) 
+    plt.grid(axis='y') 
+    plt.tight_layout() 
+    
+    
+    st.pyplot(plt) 
+CPU_Company()
  
  
 st.write(""" 
@@ -183,17 +201,19 @@ st.write("""
 
 #TABLE 9
 # Average RAM Graph
-average_ram_per_brand = laptop_data.groupby('Company')['RAM (GB)'].mean().sort_values()
+def average_RAM():
+    average_ram_per_brand = df.groupby('Company')['RAM (GB)'].mean().sort_values()
 
-plt.figure(figsize=(10, 6))
-average_ram_per_brand.plot(kind='barh', color='skyblue')
-plt.title('Average RAM by Laptop Brand')
-plt.xlabel('Average RAM (GB)')
-plt.ylabel('Brand')
-plt.grid(True)
+    plt.figure(figsize=(10, 6))
+    average_ram_per_brand.plot(kind='barh', color='skyblue')
+    plt.title('Average RAM by Laptop Brand')
+    plt.xlabel('Average RAM (GB)')
+    plt.ylabel('Brand')
+    plt.grid(True)
+    st.pyplot(plt)
 
 # Display
-st.pyplot(plt)
+average_RAM()
 
 # Analysis
 st.write("""
@@ -206,6 +226,12 @@ Based on performance requirements and use cases, this comparison provides inform
 
 #TABLE 10
 # Average Sceen Resolution Graph
+# Sample DataFrame for demonstration; replace with your actual data
+laptop_data = pd.DataFrame({
+    'Company': ['Dell', 'HP', 'Apple', 'Acer'],
+    'ScreenResolution': ['1920x1080', '1366x768', '2560x1600', '1920x1080']
+})
+
 def extract_resolution(res):
     match = re.search(r'(\d+)x(\d+)', res)
     if match:
@@ -220,7 +246,7 @@ laptop_data_clean = laptop_data.dropna(subset=['Width', 'Height'])
 avg_resolution = laptop_data_clean.groupby('Company')[['Width', 'Height']].mean()
 
 plt.figure(figsize=(10, 6))
-avg_resolution.plot(kind='bar', stacked=False, width=0.8)
+avg_resolution.plot(kind='bar', stacked=False, width=0)
 plt.title('Average Screen Resolution by Laptop Brand')
 plt.xlabel('Brand')
 plt.ylabel('Average Resolution (pixels)')
@@ -239,6 +265,5 @@ All brands generally have wider widths (horizontal resolutions), which correspon
 contemporary laptops. The disparities in focus on display quality can be seen in the screen resolutions, with some brands 
 offering higher-end models with sharper screens, like "Retina" or Full HD displays.
 """)
-
 
 
