@@ -239,22 +239,25 @@ def extract_resolution(res):
         return int(width), int(height)
     return None, None
 
-laptop_data['Width'], laptop_data['Height'] = zip(*laptop_data['ScreenResolution'].apply(extract_resolution))
+def Screen_Res_By_Brand():
+    laptop_data['Width'], laptop_data['Height'] = zip(*laptop_data['ScreenResolution'].apply(extract_resolution))
 
-laptop_data_clean = laptop_data.dropna(subset=['Width', 'Height'])
+    laptop_data_clean = laptop_data.dropna(subset=['Width', 'Height'])
 
-avg_resolution = laptop_data_clean.groupby('Company')[['Width', 'Height']].mean()
+    avg_resolution = laptop_data_clean.groupby('Company')[['Width', 'Height']].mean()
 
-plt.figure(figsize=(10, 6))
-avg_resolution.plot(kind='bar', stacked=False, width=0)
-plt.title('Average Screen Resolution by Laptop Brand')
-plt.xlabel('Brand')
-plt.ylabel('Average Resolution (pixels)')
-plt.xticks(rotation=45)
-plt.tight_layout()
+    plt.figure(figsize=(10, 6))
+    avg_resolution.plot(kind='bar', stacked=False, width=0.8)
+    plt.title('Average Screen Resolution by Laptop Brand')
+    plt.xlabel('Brand')
+    plt.ylabel('Average Resolution (pixels)')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
 
-# Display
-st.pyplot(plt)
+    # Display
+    st.pyplot(plt)
+Screen_Res_By_Brand()
 
 # Analysis
 st.write("""
@@ -267,3 +270,13 @@ offering higher-end models with sharper screens, like "Retina" or Full HD displa
 """)
 
 
+st.markdown("""
+`CONCLUSIONS`
+
+With all the data collected above we can see the different ways the laptops are priced by brand or 
+laptop specfications. We can see that Razer on average sells laptops more expensive 
+but offer higher specs with having higher screen resolutions and higher ram storage 
+on average. We can notice as well that Intel dominates the laptop market as most 
+laptops run Intel CPUS rather than AMD or samsung CPUS. We can see as well that 
+the most frequent CPU frequency is 2.5 GHz.
+""")
